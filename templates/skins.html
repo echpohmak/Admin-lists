@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скины</title>
+    <link rel="icon" href="/static/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/mobile-styles.css" media="screen and (max-width: 600px)">
+    <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/static/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker зарегистрирован:', registration);
+            })
+            .catch(error => {
+              console.log('Ошибка при регистрации Service Worker:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="menu-link" onclick="toggleSidebar()">
+            <img src="/static/images/icons/menu-icon.png" alt="Menu Icon">
+        </a>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>Скины</span>
+                <a href="javascript:void(0);" class="close-btn" onclick="toggleSidebar()">&#10005;</a>
+            </div>
+            <a href="/"><img src="/static/images/icons/home-icon.png" alt="Home Icon">Главная</a>
+            <a href="/cars"><img src="/static/images/icons/car-icon.png" alt="Car Icon">Автомобили</a>
+            <a href="/weapons"><img src="/static/images/icons/weapon-icon.png" alt="Weapon Icon">Оружие</a>
+            <a href="/skins"><img src="/static/images/icons/skin-icon.png" alt="Skin Icon">Скины</a>
+            <a href="/mappings"><img src="/static/images/icons/mapping-icon.png" alt="Mapping Icon">Маппинги</a>
+        </div>
+    </nav>
+    <h1>Список скинов</h1>
+    <div class="search-container">
+        <select id="categoryFilter" onchange="filterSkins()">
+            <option value="all">Все категории</option>
+            <option value="manMTA">Мужские MTA</option>
+            <option value="womanMTA">Женские MTA</option>
+            <option value="manGTA">Мужские GTA</option>
+            <option value="womanGTA">Женские GTA</option>
+            <option value="works">Рабочие</option>
+            <option value="medicM">ОКБ-М</option>
+            <option value="medicP">ЦГБ-П</option>
+            <option value="medicN">ЦГБ-Н</option>
+            <option value="policeM">ГУВД-М</option>
+            <option value="policeP">ГУВД-П</option>
+            <option value="policeN">ГУВД-Н</option>
+            <option value="dpsM">ГИБДД-М</option>
+            <option value="dpsP">ГИБДД-П</option>
+            <option value="dpsN">ГИБДД-Н</option>
+            <option value="army">Армия</option>
+            <option value="railroad">РЖД</option>
+            <option value="otherFractions">Фракции прочее</option>
+            <option value="other">Прочее</option>
+        </select>
+    </div>
+    
+    <div id="manMTA" class="category-block">
+        <div class="category-plaque">Мужские MTA</div>
+        {% for skin in skins if skin[2] == 'manMTA' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="womanMTA" class="category-block">
+        <div class="category-plaque">Женские MTA</div>
+        {% for skin in skins if skin[2] == 'womanMTA' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div id="manGTA" class="category-block">
+            <div class="category-plaque">Мужские GTA</div>
+            {% for skin in skins if skin[2] == 'manGTA' %}
+                <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                        <div class="image-id">{{ skin[0] }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+    </div>
+
+    <div id="womanGTA" class="category-block">
+        <div class="category-plaque">Женские GTA</div>
+        {% for skin in skins if skin[2] == 'womanGTA' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="works" class="category-block">
+        <div class="category-plaque">Рабочие</div>
+        {% for skin in skins if skin[2] == 'works' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="medicM" class="category-block">
+        <div class="category-plaque">ОКБ-М</div>
+        {% for skin in skins if skin[2] == 'medicM' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="medicP" class="category-block">
+        <div class="category-plaque">ЦГБ-П</div>
+        {% for skin in skins if skin[2] == 'medicP' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="medicN" class="category-block">
+        <div class="category-plaque">ЦГБ-Н</div>
+        {% for skin in skins if skin[2] == 'medicN' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="policeM" class="category-block">
+        <div class="category-plaque">ГУВД-М</div>
+        {% for skin in skins if skin[2] == 'policeM' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="policeP" class="category-block">
+        <div class="category-plaque">ГУВД-П</div>
+        {% for skin in skins if skin[2] == 'policeP' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="policeN" class="category-block">
+        <div class="category-plaque">ГУВД-Н</div>
+        {% for skin in skins if skin[2] == 'policeN' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="dpsM" class="category-block">
+        <div class="category-plaque">ГИБДД-М</div>
+        {% for skin in skins if skin[2] == 'dpsM' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="dpsP" class="category-block">
+        <div class="category-plaque">ГИБДД-П</div>
+        {% for skin in skins if skin[2] == 'dpsP' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="dpsN" class="category-block">
+        <div class="category-plaque">ГИБДД-Н</div>
+        {% for skin in skins if skin[2] == 'dpsN' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="army" class="category-block">
+        <div class="category-plaque">Армия</div>
+        {% for skin in skins if skin[2] == 'army' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="railroad" class="category-block">
+        <div class="category-plaque">РЖД</div>
+        {% for skin in skins if skin[2] == 'railroad' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="otherFractions" class="category-block">
+        <div class="category-plaque">Фракции прочее</div>
+        {% for skin in skins if skin[2] == 'otherFractions' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="other" class="category-block">
+        <div class="category-plaque">Прочее</div>
+        {% for skin in skins if skin[2] == 'other' %}
+            <div class="skin-card" data-image="{{ url_for('static', filename='images/skins/' + skin[1]) }}" data-category="{{ skin[2] }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/skins/' + skin[1]) }}" alt="Skin Image" loading="lazy">
+                    <div class="image-id">{{ skin[0] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function filterSkins() {
+            var category = document.getElementById("categoryFilter").value;
+            var categories = document.querySelectorAll('.category-block');
+
+            categories.forEach(function(cat) {
+                cat.style.display = "none";
+            });
+
+            if (category === "all") {
+                categories.forEach(function(cat) {
+                    cat.style.display = "flex";
+                });
+            } else {
+                var selectedCategory = document.getElementById(category);
+                if (selectedCategory) {
+                    selectedCategory.style.display = "flex";
+                }
+            }
+        }
+    </script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            sidebar.style.width = sidebar.style.width === "270px" ? "0" : "270px";
+        
+            if (sidebar.style.width === "270px") {
+                document.addEventListener("click", closeSidebarOnClickOutside);
+            } else {
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+
+        function closeSidebarOnClickOutside(event) {
+            var sidebar = document.querySelector(".sidebar");
+            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-link")) {
+                sidebar.style.width = "0";
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+    </script>
+</body>
+</html>

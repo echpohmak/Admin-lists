@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маппинги</title>
+    <link rel="icon" href="/static/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/mobile-styles.css" media="screen and (max-width: 600px)">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="menu-link" onclick="toggleSidebar()">
+            <img src="/static/images/icons/menu-icon.png" alt="Menu Icon">
+        </a>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>Маппинги</span>
+                <a href="javascript:void(0);" class="close-btn" onclick="toggleSidebar()">&#10005;</a>
+            </div>
+            <a href="/"><img src="/static/images/icons/home-icon.png" alt="Home Icon">Главная</a>
+            <a href="/cars"><img src="/static/images/icons/car-icon.png" alt="Car Icon">Автомобили</a>
+            <a href="/weapons"><img src="/static/images/icons/weapon-icon.png" alt="Weapon Icon">Оружие</a>
+            <a href="/skins"><img src="/static/images/icons/skin-icon.png" alt="Skin Icon">Скины</a>
+            <a href="/mappings"><img src="/static/images/icons/mapping-icon.png" alt="Mapping Icon">Маппинги</a>
+        </div>
+    </nav>
+    <h1>Маппинги</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Поиск...">
+    </div>
+
+    <table>
+        <tr>
+            <th>Название<span class="sort-indicator"></span></th>
+            <th>Описание<span class="sort-indicator"></span></th>
+            <th>Объекты<span class="sort-indicator" style="display: none;"></span></th>
+        </tr>
+        {% for obj in objects_data %}
+        <tr>
+            <td>{{ obj[1] }}</td>
+            <td>{{ obj[2] }}</td>
+            <td>
+                <div class="fakebutton copyButton" data-index="{{ loop.index0 }}">
+                    Копировать
+                </div>
+                <div class="fakenotification" style="display: none;"></div>
+            </td>
+            <td class="applicationFormText" style="display: none;">{{ obj[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a class="button" href="{{ url_for('edit_mappings') }}">Добавить маппинг</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tableRows = document.querySelectorAll('#mappingsTable tbody tr');
+            var searchInput = document.getElementById('searchInput');
+            const table = document.querySelector('table');
+            const headers = table.querySelectorAll('th');
+            const rows = Array.from(table.querySelectorAll('tr')).slice(1);
+            let ascending = true;
+            let columnIndex = 0;
+            headers.forEach((header, index) => {
+                header.addEventListener('click', () => {
+                    ascending = !ascending;
+                    columnIndex = index;
+                    sortTable();
+                    updateSortIndicator();
+                });
+            });
+    
+            function sortTable() {
+                rows.sort((a, b) => {
+                    const cellA = a.querySelectorAll('td')[columnIndex].textContent;
+                    const cellB = b.querySelectorAll('td')[columnIndex].textContent;
+                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                        return ascending ? parseFloat(cellA) - parseFloat(cellB) : parseFloat(cellB) - parseFloat(cellA);
+                    } else {
+                        return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                    }
+                });
+                rows.forEach(row => table.appendChild(row));
+            }
+    
+            function updateSortIndicator() {
+                headers.forEach(header => {
+                    header.classList.remove('asc', 'desc');
+                    header.querySelector('.sort-indicator').textContent = '';
+                });
+                headers[columnIndex].classList.toggle('asc', ascending);
+                headers[columnIndex].classList.toggle('desc', !ascending);
+                headers[columnIndex].querySelector('.sort-indicator').textContent = ascending ? ' ▲' : ' ▼';
+            }
+    
+            searchInput.addEventListener('input', function () {
+                var searchTerm = searchInput.value.toLowerCase();
+                tableRows.forEach(function (row) {
+                    var found = false;
+                    row.querySelectorAll('td').forEach(function (cell) {
+                        if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                            found = true;
+                        }
+                    });
+                    row.style.display = found ? '' : 'none';
+                });
+            });
+    
+            var copyButtons = document.querySelectorAll('.copyButton');
+            var applicationFormTexts = document.querySelectorAll('.applicationFormText');
+            var notifications = document.querySelectorAll('.fakenotification');
+    
+            var clipboard = new ClipboardJS('.copyButton', {
+                text: function (trigger) {
+                    var index = trigger.getAttribute('data-index');
+                    return applicationFormTexts[index].innerText;
+                }
+            });
+    
+            clipboard.on('success', function (e) {
+                var index = e.trigger.getAttribute('data-index');
+                notifications[index].textContent = 'Объекты успешно скопированы в буфер обмена!';
+                notifications[index].style.display = 'block';
+    
+                setTimeout(function () {
+                    notifications[index].style.display = 'none';
+                }, 3000);
+    
+                e.clearSelection();
+            });
+    
+            clipboard.on('error', function (e) {
+                console.error('Копирование не удалось:', e);
+                alert('Копирование не удалось. Пожалуйста, сообщите об этом разработчику.');
+            });
+        });
+    </script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            sidebar.style.width = sidebar.style.width === "270px" ? "0" : "270px";
+        
+            if (sidebar.style.width === "270px") {
+                document.addEventListener("click", closeSidebarOnClickOutside);
+            } else {
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+
+        function closeSidebarOnClickOutside(event) {
+            var sidebar = document.querySelector(".sidebar");
+            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-link")) {
+                sidebar.style.width = "0";
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+    </script>
+</body>
+</html>

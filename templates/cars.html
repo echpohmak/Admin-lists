@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автомобили</title>
+    <link rel="icon" href="/static/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/mobile-styles.css" media="screen and (max-width: 600px)">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="menu-link" onclick="toggleSidebar()">
+            <img src="/static/images/icons/menu-icon.png" alt="Menu Icon">
+        </a>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>Автомобили</span>
+                <a href="javascript:void(0);" class="close-btn" onclick="toggleSidebar()">&#10005;</a>
+            </div>
+            <a href="/"><img src="/static/images/icons/home-icon.png" alt="Home Icon">Главная</a>
+            <a href="/cars"><img src="/static/images/icons/car-icon.png" alt="Car Icon">Автомобили</a>
+            <a href="/weapons"><img src="/static/images/icons/weapon-icon.png" alt="Weapon Icon">Оружие</a>
+            <a href="/skins"><img src="/static/images/icons/skin-icon.png" alt="Skin Icon">Скины</a>
+            <a href="/mappings"><img src="/static/images/icons/mapping-icon.png" alt="Mapping Icon">Маппинги</a>
+        </div>
+    </nav>
+    <h1>Список автомобилей</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Поиск...">
+    </div>
+    <div class="table-container">
+        <table id="carsTable">
+            <thead>
+                <tr>
+                    <th>Название GTA<span class="sort-indicator"></span></th>
+                    <th>Название MTA<span class="sort-indicator"></span></th>
+                    <th>Car ID<span class="sort-indicator"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars_data %}
+                <tr data-image="{{ car[3] }}">
+                        <td>{{ car[0] }}</td>
+                        <td>{{ car[1] }}</td>
+                        <td>{{ car[2] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tableRows = document.querySelectorAll('#carsTable tbody tr');
+            var searchInput = document.getElementById('searchInput');
+            const table = document.querySelector('table');
+            const headers = table.querySelectorAll('th');
+            const rows = Array.from(table.querySelectorAll('tr')).slice(1);
+            let ascending = true;
+            let columnIndex = 0;
+            headers.forEach((header, index) => {
+                header.addEventListener('click', () => {
+                    ascending = !ascending;
+                    columnIndex = index;
+                    sortTable();
+                    updateSortIndicator();
+                });
+            });
+    
+            function sortTable() {
+                rows.sort((a, b) => {
+                    const cellA = a.querySelectorAll('td')[columnIndex].textContent;
+                    const cellB = b.querySelectorAll('td')[columnIndex].textContent;
+                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                        return ascending ? parseFloat(cellA) - parseFloat(cellB) : parseFloat(cellB) - parseFloat(cellA);
+                    } else {
+                        return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                    }
+                });
+                rows.forEach(row => table.appendChild(row));
+            }
+    
+            function updateSortIndicator() {
+                headers.forEach(header => {
+                    header.classList.remove('asc', 'desc');
+                    header.querySelector('.sort-indicator').textContent = '';
+                });
+                headers[columnIndex].classList.toggle('asc', ascending);
+                headers[columnIndex].classList.toggle('desc', !ascending);
+                headers[columnIndex].querySelector('.sort-indicator').textContent = ascending ? ' ▲' : ' ▼';
+            }
+    
+            searchInput.addEventListener('input', function () {
+                var searchTerm = searchInput.value.toLowerCase();
+                tableRows.forEach(function (row) {
+                    var found = false;
+                    row.querySelectorAll('td').forEach(function (cell) {
+                        if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                            found = true;
+                        }
+                    });
+                    row.style.display = found ? '' : 'none';
+                });
+            });
+    
+            tableRows.forEach(function (row) {
+                row.addEventListener('click', function () {
+                    var imageURL = row.getAttribute('data-image');
+                    $.magnificPopup.open({
+                        items: {
+                            src: imageURL
+                        },
+                        type: 'image'
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            sidebar.style.width = sidebar.style.width === "270px" ? "0" : "270px";
+        
+            if (sidebar.style.width === "270px") {
+                document.addEventListener("click", closeSidebarOnClickOutside);
+            } else {
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+
+        function closeSidebarOnClickOutside(event) {
+            var sidebar = document.querySelector(".sidebar");
+            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-link")) {
+                sidebar.style.width = "0";
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+    </script>
+</body>
+</html>

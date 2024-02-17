@@ -1,0 +1,106 @@
+.card img {
+    border-radius: 5px;
+    max-width: 100%;
+    max-height: 30px;
+    object-fit: cover;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+.card h2 {
+    font-size: 14px;
+}
+
+.card p {
+    font-size: 12px;
+}
+
+.card {
+    width: 30%;
+    margin: 2.5%;
+}
+
+.footer {
+    font-size: 12px;
+}
+
+#searchInput {
+    max-width: 100%;
+}
+
+.table-container {
+    margin-top: 10px;
+}
+
+table {
+    font-size: 12px;
+}
+
+th, td {
+    padding: 5px;
+}
+
+.sort-indicator {
+    font-size: 10px;
+}
+
+.mfp-figure small {
+    font-size: 12px;
+}
+
+.mfp-img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 14px 16px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+.category-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.skin-card {
+    width: 45%;
+    margin: 5px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-id {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+}

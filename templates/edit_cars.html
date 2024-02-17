@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление авто</title>
+    <link rel="icon" href="/static/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/mobile-styles.css" media="screen and (max-width: 600px)">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="menu-link" onclick="toggleSidebar()">
+            <img src="/static/images/icons/menu-icon.png" alt="Menu Icon">
+        </a>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>Добавление авто</span>
+                <a href="javascript:void(0);" class="close-btn" onclick="toggleSidebar()">&#10005;</a>
+            </div>
+            <a href="/"><img src="/static/images/icons/home-icon.png" alt="Home Icon">Главная</a>
+            <a href="/cars"><img src="/static/images/icons/car-icon.png" alt="Car Icon">Автомобили</a>
+            <a href="/weapons"><img src="/static/images/icons/weapon-icon.png" alt="Weapon Icon">Оружие</a>
+            <a href="/skins"><img src="/static/images/icons/skin-icon.png" alt="Skin Icon">Скины</a>
+            <a href="/mappings"><img src="/static/images/icons/mapping-icon.png" alt="Mapping Icon">Маппинги</a>
+        </div>
+    </nav>
+    <div class="form-container">
+        <h1>Добавить новый автомобиль</h1>
+        <form method="POST" action="{{ url_for('add_car') }}" class="add-car-form">
+            <div class="input-container">
+                <label for="gta_name">Название GTA:</label>
+                <input type="text" id="gta_name" name="gta_name" required placeholder="GTAшное название">
+            </div>
+            
+            <div class="input-container">
+                <label for="mta_name">Название MTA:</label>
+                <input type="text" id="mta_name" name="mta_name" required placeholder="Полное реальное название">
+            </div>
+
+            <div class="input-container">
+                <label for="car_id">Car ID:</label>
+                <input type="text" id="car_id" name="car_id" required placeholder="Только ID авто">
+            </div>
+
+            <div class="input-container">
+                <label for="image_filename">Скриншот:</label>
+                <input type="text" id="image_filename" name="image_filename" required placeholder="URL изображения на imgur">
+            </div>
+
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector(".sidebar");
+            sidebar.style.width = sidebar.style.width === "270px" ? "0" : "270px";
+        
+            if (sidebar.style.width === "270px") {
+                document.addEventListener("click", closeSidebarOnClickOutside);
+            } else {
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+
+        function closeSidebarOnClickOutside(event) {
+            var sidebar = document.querySelector(".sidebar");
+            if (!event.target.closest(".sidebar") && !event.target.closest(".menu-link")) {
+                sidebar.style.width = "0";
+                document.removeEventListener("click", closeSidebarOnClickOutside);
+            }
+        }
+    </script>
+</body>
+</html>
